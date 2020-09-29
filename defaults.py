@@ -1,0 +1,11 @@
+RUNNING_ON = "UBUNTU" #WINDOWS-UBUNTU
+databasedriver = "pymysql" #pymysql - mysqlconnector
+server = "localhost"
+port = 3306
+databasename = "aitrader"
+user = "root"
+pwd = "dtisat"
+path = "/home/carloscz25_gmail_com/aitrader/basicscraping/basicscraping"
+# path = "/home/ubuntucontisola/aitrader/basicscraping/basicscraping "
+# path = "C:\\Users\\Carlos Conti\\PycharmProjects\\basicscraping"
+pathchromedriver = "/home/carloscz25_gmail_com/chromedriver"
