@@ -3,7 +3,7 @@ from pathlib import Path
 
 import sys
 #comment if running on windows
-sys.path.append("/home/carloscz25_gmail_com/aitrader/basicscraping/basicscraping")
+sys.path.append("/home/carloscz25_gmail_com/aitrader/basicscraping")
 import defaults
 sys.path.pop(0)
 print(sys.path)
