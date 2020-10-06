@@ -103,6 +103,31 @@ table_CotizacionConsolidadaMC = Table('cotizacionesconsolidadas_mc', meta,Column
     Column('ts',DateTime),
     Column('cotizacioneslastid',Integer))
 
+class MacroDataItem(Base):
+    __tablename__ = 'macrodataitems'
+    id = Column(Integer, primary_key=True)
+    time = Column(String(10))
+    date = Column(DateTime)
+    country = Column(String(10))
+    title = Column(String(100))
+    actual = Column(Float)
+    previous = Column(Float)
+    consensus = Column(Float)
+    forecast = Column(Float)
+    source = Column(String(50))
+
+table_MacroDataItems = Table('macrodataitems', meta,Column('id', Integer, primary_key=True),
+    Column('time',String(10)),
+    Column('date', DateTime),
+    Column('country',String(10)),
+    Column('title',String(100)),
+    Column('actual',String(25)),
+    Column('previous', String(25)),
+    Column('consensus', String(25)),
+    Column('forecast', String(25)),
+    Column('source', String(50)))
+
+
 
 def checktablesexists(engine, tablename):
     hastable = engine.dialect.has_table(engine, tablename)
@@ -160,6 +185,7 @@ def setupdatabase(engine, databasename):
     table_CotizazionHistMC.create(engine)
     nengine.dispose()
     print("New Database '" + databasename + "' created successfully with all tables in it!")
+
 
 
 

@@ -10,6 +10,14 @@ def mthprint(v):
     print(v,flush=True)
     mthprintlock.release()
 
+def isprocessrunninginubuntu(servicename):
+    import os
+    s = os.system("systemctl is-active --quiet " + servicename)
+    if s == 0:
+        return True
+    else:
+        return False
+
 
 
 def str2float(str):
