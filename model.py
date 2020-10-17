@@ -77,13 +77,15 @@ class CotizazionHistMC(Base):
     ticker = Column(String(25))
     valorcierre = Column(Float)
     percdiff = Column(Float)
+    split = Column(Integer)
 
 table_CotizazionHistMC = Table('cotizaciones_hist_mc', meta,Column('id',Integer, primary_key=True),
     Column('nombre',String(100)),
     Column('fechatexto', String(25)),
     Column('ticker',String(25)),
     Column('valorcierre',Float),
-    Column('percdiff',Float))
+    Column('percdiff',Float),
+    Column('split', Integer))
 
 class CotizacionConsolidadaMC(Base):
     __tablename__ = 'cotizacionesconsolidadas_mc'
