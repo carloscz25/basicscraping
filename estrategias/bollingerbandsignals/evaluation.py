@@ -83,8 +83,9 @@ def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")
         for v in sale_signals:
             plt.scatter(v[4], v[0], c="#EE82EE", s=50)
 
-    # for s in allsignals:
-    #     print(s[5] + ":" + str(s[0]) + " " + s[4].strftime("%d/%m/%Y"))
+    for s in allsignals:
+        pass
+        # print(s[5] + ":" + str(s[0]) + " " + s[4].strftime("%d/%m/%Y"))
 
     #accounting operations
     #buy on first AS and sell on first SS
@@ -116,18 +117,22 @@ def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")
             negativeopscount +=1
 
     print(ticker + ": " + str(cumprofit) + "   (+)=" + str(positiveopscount) + "  " + "(-)" + str(negativeopscount))
+
+    if plot == True:
+        plt.show()
     return (cumprofit, positiveopscount, negativeopscount)
-    # plt.show()
 
 sql = "select * from tickers_mc"
 df = pandas.read_sql(sql, engine)
+
 cumposops = 0
 cumnegops = 0
 cumprofit = 0
+
 for index, row in df.iterrows():
     ticker = row["ticker"]
     try:
-        results = dosimulation(ticker, dateinterval=("2018-01-01","2018-12-31"))
+        results = dosimulation(ticker, plot=False, dateinterval=("2019-01-01","2019-12-31"))
         cumprofit += results[0]
         cumposops += results[1]
         cumnegops += results[2]
@@ -137,3 +142,6 @@ for index, row in df.iterrows():
 print("CumProfit: " + str(cumprofit) + "   (total+)=" + str(cumposops) + "    (total-)=" + str(cumnegops))
 print("PercPos:" + str((cumposops/(cumposops+cumnegops))*100)+"%")
 print("PercNeg:" + str((cumnegops/(cumposops+cumnegops))*100)+"%")
+print("NumPosOps:" + str(cumposops))
+print("NumNegOps:" + str(cumnegops))
+print("TotalOps:" + str(cumposops + cumnegops))
