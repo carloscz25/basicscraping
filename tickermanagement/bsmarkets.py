@@ -49,13 +49,17 @@ def checktickers_bsmarkets(engine):
         nombre = cells[0].text
         ticker = cells[1].text
 
-        t = TickerMC(bsmarkets=nombre, ticker=ticker)
+        t = TickerMC()
+        t.bsmarkets = nombre
+        t.ticker = ticker
 
         Session = sessionmaker(bind=engine)
         session = Session()
         t = session.query(TickerMC).filter(TickerMC.ticker == ticker).first()
         if t == None:
-            t = TickerMC(ticker=ticker, bsmarkets=nombre)
+            t = TickerMC()
+            t.ticker = ticker
+            t.bsmarkets = nombre
             session.add(t)
             session.commit()
         else:
