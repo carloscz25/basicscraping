@@ -3,28 +3,11 @@ from model import getaitraderengine
 import pandas
 import matplotlib.pyplot as plt
 import datetime
+from estrategias.bollingerbandsignals.commons import issalesignal, isacquisitionsignal
 
 engine = getaitraderengine("localhost",3306, "aitrader")
 
-def isacquisitionsignal(values):
-    curr = values[0]
-    prev_1 = values[1]
-    prev_2 = values[2]
-    #current value is greater than BollDown
-    #and current value is lower than mean and lower than BollUp
-    #and current BollDown is greater than previous value
-    isas =  ((curr[0]>curr[3] and curr[0] < curr[1] and curr[0] < curr[2]) and prev_1[0]<curr[3])
-    return isas
 
-def issalesignal(values):
-    curr = values[0]
-    prev_1 = values[1]
-    prev_2 = values[2]
-    # current value is lower than BollUp
-    # and current value is bigger than mean and bigger than BollDown
-    # and current BollUp is lower than previous value
-    isas = ((curr[0] < curr[2] and curr[0] > curr[1] and curr[0] > curr[3]) and prev_1[0] > curr[2])
-    return isas
 
 
 
@@ -132,12 +115,12 @@ cumprofit = 0
 for index, row in df.iterrows():
     ticker = row["ticker"]
     try:
-        results = dosimulation(ticker, plot=False, dateinterval=("2019-01-01","2019-12-31"))
+        results = dosimulation(ticker, plot=False, dateinterval=("2020-01-01","2020-12-31"))
         cumprofit += results[0]
         cumposops += results[1]
         cumnegops += results[2]
     except Exception as e:
-        print(ticker + " : " +  str(e))
+        print(ticker + " : " + str(e))
 
 print("CumProfit: " + str(cumprofit) + "   (total+)=" + str(cumposops) + "    (total-)=" + str(cumnegops))
 print("PercPos:" + str((cumposops/(cumposops+cumnegops))*100)+"%")

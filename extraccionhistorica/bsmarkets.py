@@ -38,7 +38,7 @@ def doimport(engine):
         except BaseException:
             pass
 
-    currrow = 32
+    currrow = 0
 
     while(True):
 
@@ -65,12 +65,12 @@ def doimport(engine):
 
         buttonhistorico = browser.find_element_by_id("wfg_enlaceHistoCSV")
         buttonhistorico.click()
-        txtFechaDesde = browser.find_element_by_name("txtDescargaDesde")
+        txtFechaDesde = evaluate(lambda: browser.find_element_by_name("txtDescargaDesde"))
         txtFechaDesde.clear()
-        txtFechaDesde.send_keys("01/01/2010")
-        txtFechaHasta = browser.find_element_by_name("txtDescargaHasta")
+        txtFechaDesde.send_keys("22/10/2020")
+        txtFechaHasta = evaluate(lambda: browser.find_element_by_name("txtDescargaHasta"))
         txtFechaHasta.clear()
-        txtFechaHasta.send_keys("31/12/2011")
+        txtFechaHasta.send_keys("22/10/2020")
         txtFechaHasta.send_keys(Keys.ENTER)
 
         #inicio extraccion
