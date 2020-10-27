@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 import defaults
 import datetime, time
 from datetime import timedelta
@@ -10,14 +10,14 @@ from sqlalchemy.orm import sessionmaker, Session
 
 def doextractday(day, pattern, engine):
     url = "https://tradingeconomics.com/calendar#"
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
+    firefox_options = Options()
+    firefox_options.add_argument('--headless')
+    firefox_options.add_argument('--no-sandbox')
+    firefox_options.add_argument('--disable-dev-shm-usage')
     if defaults.RUNNING_ON == "WINDOWS":
-        browser = webdriver.Chrome(chrome_options=chrome_options)
+        browser = webdriver.Firefox(firefox_options=firefox_options)
     if defaults.RUNNING_ON == "UBUNTU":
-        browser = webdriver.Chrome(defaults.pathchromedriver, chrome_options=chrome_options)
+        browser = webdriver.Firefox(defaults.pathfirefoxdriver, firefox_options=firefox_options)
     succeeded = False
     while (not succeeded):
         try:

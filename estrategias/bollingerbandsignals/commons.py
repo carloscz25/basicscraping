@@ -22,4 +22,4 @@ def issalesignal(values):
     isas = ((curr[0] < curr[2] and curr[0] > curr[1] and curr[0] > curr[3]) and prev_1[0] > curr[2])
     return isas
 
-def calculate_rsi(values, previousrsi):
+

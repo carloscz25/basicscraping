@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -12,11 +12,11 @@ from globalutils import evaluate
 
 
 def checktickers_bolsademadrid(engine):
-    chrome_options = Options()
-    # chrome_options.add_argument('--headless')
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(chrome_options=chrome_options)
+    firefox_options = Options()
+    # firefox_options.add_argument('--headless')
+    # firefox_options.add_argument('--no-sandbox')
+    # firefox_options.add_argument('--disable-dev-shm-usage')
+    browser = webdriver.Firefox(firefox_options=firefox_options)
 
     succeeded = False
     while (not succeeded):

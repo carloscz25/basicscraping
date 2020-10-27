@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as ExpectedConditions
@@ -19,15 +19,15 @@ from globalutils import evaluate
 #1/1/2012-31/12/2017 - Completada
 #1/1/2010-31/12/2011 - Completada
 
-def doimport(engine):
+def doimport(engine, fromdate, todate):
 
     starturl = "https://www.bsmarkets.com/cs/Satellite?cid=1191407147971&pagename=BSMarkets2%2FPage%2FPage_Interna_WFG_Template&language=es_ES"
 
-    chrome_options = Options()
-    # chrome_options.add_argument('--headless')
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(chrome_options=chrome_options)
+    firefox_options = Options()
+    firefox_options.add_argument('--headless')
+    firefox_options.add_argument('--no-sandbox')
+    firefox_options.add_argument('--disable-dev-shm-usage')
+    browser = webdriver.Firefox(firefox_options=firefox_options)
 
 
     succeeded = False
@@ -67,10 +67,10 @@ def doimport(engine):
         buttonhistorico.click()
         txtFechaDesde = evaluate(lambda: browser.find_element_by_name("txtDescargaDesde"))
         txtFechaDesde.clear()
-        txtFechaDesde.send_keys("22/10/2020")
+        txtFechaDesde.send_keys(fromdate)
         txtFechaHasta = evaluate(lambda: browser.find_element_by_name("txtDescargaHasta"))
         txtFechaHasta.clear()
-        txtFechaHasta.send_keys("22/10/2020")
+        txtFechaHasta.send_keys(todate)
         txtFechaHasta.send_keys(Keys.ENTER)
 
         #inicio extraccion
@@ -118,4 +118,4 @@ def doimport(engine):
 
 
 engine = create_engine("mysql+mysqlconnector://root:dtisat@localhost:3306/aitrader")
-doimport(engine)
+doimport(engine, "26/10/2020", todate)

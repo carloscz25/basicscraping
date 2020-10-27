@@ -12,7 +12,13 @@ def getdefaultfordates():
     fromdate = (datetime.datetime.now()-timedelta(days=365)).strftime("%Y-%m-%d")
     return (fromdate, todate)
 
-def discoversignals(ticker, fordates=getdefaultfordates(), plot=True):
+def SMMA_U(x, *v):
+    y = 2
+
+def SMMA_D(values):
+    y = 2
+
+def discoversignals(ticker, fordates=getdefaultfordates(), dateforsignalmonitoring=datetime.datetime.now(), plot=True):
     """fordates : tuple => (Y%-m%-%d,%Y-%m-%d)"""
     sql = "select distinct * from (select distinct ticker,str_to_date(fechatexto, '%d-%m-%Y') as fecha, valorcierre, split from ( select *, str_to_date(fechatexto, '%d-%m-%Y') from cotizaciones_hist_mc ) as st1  where  ticker = '" + ticker + "' order by ticker asc, fecha asc) as st2 where fecha between '" + \
           fordates[0] + "' and '" + fordates[1] + "'"
@@ -27,6 +33,7 @@ def discoversignals(ticker, fordates=getdefaultfordates(), plot=True):
     dfp["bollup"] = dfp["mean"] + (bollingermultup * dfp["var"])
     dfp["bolldown"] = dfp["mean"] - (bollingermultdown * dfp["var"])
 
+
     prevvaluesn = 5
     prevvalues = []
     acq_signals = []
@@ -40,6 +47,7 @@ def discoversignals(ticker, fordates=getdefaultfordates(), plot=True):
         bollup = row["bollup"]
         bolldown = row["bolldown"]
         values = [val, mean, bollup, bolldown, index]
+
 
         prevvalues.insert(0, values)
 
@@ -63,7 +71,7 @@ def discoversignals(ticker, fordates=getdefaultfordates(), plot=True):
         # print(s[5] + ":" + str(s[0]) + " " + s[4].strftime("%d/%m/%Y"))
         signaldatetime = s[4]
         #if the signal is between today and the last 5 days
-        if (datetime.datetime.now().date()-timedelta(days=1)) <= s[4] <= datetime.datetime.now().date():
+        if (dateforsignalmonitoring.date()-timedelta(days=3)) <= s[4] <= dateforsignalmonitoring.date():
             signals += s[5] + ":" + str(s[0]) + " " + s[4].strftime("%d/%m/%Y")
     if (signals != ""):
         print(ticker + " :    " + signals)

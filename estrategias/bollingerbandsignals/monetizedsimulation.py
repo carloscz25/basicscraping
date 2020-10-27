@@ -50,6 +50,7 @@ def calcSMMs(df, n_period):
             counter += 1
 
 
+
 def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")):
 
 

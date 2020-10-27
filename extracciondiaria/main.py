@@ -145,7 +145,7 @@ if (__name__ == "__main__"):
     th1.start()
     th2.start()
     th3.start()
-    th4.start()
+    # th4.start()
 else:
     print("Ejecutada via falsa en Main...")
 

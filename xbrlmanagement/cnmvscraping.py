@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as ExpectedConditions
 from selenium.webdriver.common.by import By
@@ -16,14 +16,14 @@ year = 2020
 ejercicios = [i for i in range(year, 2004,-1)]
 ejercicios = [2019]
 
-chrome_options = Options()
-# chrome_options.add_argument('--headless')
-# chrome_options.add_argument('--no-sandbox')
-# chrome_options.add_argument('--disable-dev-shm-usage')
+firefox_options = Options()
+# firefox_options.add_argument('--headless')
+# firefox_options.add_argument('--no-sandbox')
+# firefox_options.add_argument('--disable-dev-shm-usage')
 if defaults.RUNNING_ON == "WINDOWS":
-    browser = webdriver.Chrome(chrome_options=chrome_options)
+    browser = webdriver.Firefox(firefox_options=firefox_options)
 if defaults.RUNNING_ON == "UBUNTU":
-    browser = webdriver.Chrome(defaults.pathchromedriver, chrome_options=chrome_options)
+    browser = webdriver.Firefox(defaults.pathfirefoxdriver, firefox_options=firefox_options)
 
 succeeded = False
 while (not succeeded):

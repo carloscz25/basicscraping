@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as ExpectedConditions
@@ -20,11 +20,11 @@ def doimport(engine):
 
     starturl = "https://www.bsmarkets.com/cs/Satellite?cid=1191407147971&pagename=BSMarkets2%2FPage%2FPage_Interna_WFG_Template&language=es_ES"
 
-    chrome_options = Options()
-    # chrome_options.add_argument('--headless')
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(chrome_options=chrome_options)
+    firefox_options = Options()
+    # firefox_options.add_argument('--headless')
+    # firefox_options.add_argument('--no-sandbox')
+    # firefox_options.add_argument('--disable-dev-shm-usage')
+    browser = webdriver.Firefox(firefox_options=firefox_options)
 
 
     succeeded = False
@@ -51,7 +51,16 @@ def doimport(engine):
         nombre = cells[0].text
         ticker = cells[1].text
         precio = cells[3].text
+        if (precio!="-"):
+            precio = float(precio.replace(",","."))
+        else:
+            precio = None
+        # valor = float(cellshistorico[1].text.replace(",", "."))
         varperc = cells[4].text
+        if (varperc!="-"):
+            varperc = float(varperc.replace(",","."))
+        else:
+            varperc = None
         vareur = cells[5].text
         max = cells[6].text
         min = cells[7].text
