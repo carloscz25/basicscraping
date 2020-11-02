@@ -66,6 +66,7 @@ def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")
     dfp["bollup"] = dfp["mean"]+(bollingermultup*dfp["var"])
     dfp["bolldown"] = dfp["mean"]-(bollingermultdown * dfp["var"])
 
+
     dfp["U"] = dfp[ticker].rolling(2).apply(U)
     dfp["D"] = dfp[ticker].rolling(2).apply(D)
 
@@ -81,10 +82,12 @@ def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")
         meanvals = dfp["mean"].values
         bollup = dfp["bollup"].values
         bolldown = dfp["bolldown"].values
+
         ax[0].plot(xvals, tickervals)
         ax[0].plot(xvals,meanvals)
         ax[0].plot(xvals, bollup)
         ax[0].plot(xvals, bolldown)
+
         rsivals = dfp["RSI"].values
         ax[1].plot(xvals, rsivals)
 
@@ -122,8 +125,10 @@ def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")
     if plot == True:
         for v in acq_signals:
             ax[0].scatter(v[4], v[0], c="#FFFF00", s=50)
+            ax[0].annotate(str(v[0]), (v[4], v[0]) )
         for v in sale_signals:
             ax[0].scatter(v[4], v[0], c="#EE82EE", s=50)
+            ax[0].annotate(str(v[0]), (v[4], v[0]))
 
     for s in allsignals:
         pass
@@ -162,7 +167,9 @@ def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")
     print(ticker + ": " + str(cumprofit) + "   (+)=" + str(positiveopscount) + "  " + "(-)" + str(negativeopscount))
 
     if plot == True:
-        plt.show()
+        plt.savefig("charts/" + ticker + ".jpg")
+        # plt.show()
+        y=2
 
     for op in ops:
         datefrom = op[3]
@@ -175,7 +182,7 @@ def dosimulation(ticker, plot=False, dateinterval = ("2010-01-01", "2020-12-31")
     return (cumprofit, positiveopscount, negativeopscount)
 
 datefrom = "2020-01-01"
-dateto = "2020-07-31"
+dateto = "2020-12-31"
 daterange = pandas.date_range(datetime.datetime.strptime(datefrom, "%Y-%m-%d"),datetime.datetime.strptime(dateto, "%Y-%m-%d"), freq='d')
 dfnumops = pandas.DataFrame(index=daterange)
 dfnumops["N"] = 0
@@ -190,7 +197,7 @@ cumprofit = 0
 for index, row in df.iterrows():
     ticker = row["ticker"]
     try:
-        results = dosimulation(ticker, plot=False, dateinterval=(datefrom,dateto))
+        results = dosimulation(ticker, plot=True, dateinterval=(datefrom,dateto))
         cumprofit += results[0]
         cumposops += results[1]
         cumnegops += results[2]
@@ -204,5 +211,5 @@ print("NumPosOps:" + str(cumposops))
 print("NumNegOps:" + str(cumnegops))
 print("TotalOps:" + str(cumposops + cumnegops))
 print("MaxNumberOfSimultaneousOps: " + str(max(dfnumops["N"].values)))
-plt.show()
+
 y=2
