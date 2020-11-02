@@ -1,4 +1,4 @@
-RUNNING_ON = "WINDOWS" #WINDOWS-UBUNTU
+RUNNING_ON = "UBUNTU" #WINDOWS-UBUNTU
 databasedriver = "pymysql" #pymysql - mysqlconnector
 server = "localhost"
 port = 3306
