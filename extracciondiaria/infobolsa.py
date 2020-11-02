@@ -32,7 +32,7 @@ def doimportinfobolsa(engine, iteracion):
         browser = webdriver.Firefox(firefox_options=firefox_options)
     if defaults.RUNNING_ON == "UBUNTU":
 
-        browser = webdriver.Firefox(defaults.pathfirefoxdriver, firefox_options=firefox_options)
+        browser = webdriver.Firefox(executable_path=defaults.pathfirefoxdriver, firefox_options=firefox_options)
 
     succeeded = False
     while(not succeeded):
