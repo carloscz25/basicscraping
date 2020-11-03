@@ -76,6 +76,10 @@ def doimportbsmarkets(engine, iteracion):
         cotizacion.fechaTexto = hora
         cotizacion.ts = datetime.datetime.now()
         cotizacion.source = BSMARKETS
+        try:
+            cotizacion.derivedsourcetimestamp = gettimestampfromfechatexto(BSMARKETS, cotizacion)
+        except:
+            pass
 
         # tratamos de guardar un valor timestamp directamente
         try:

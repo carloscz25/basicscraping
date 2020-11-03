@@ -103,6 +103,11 @@ def doimportinfobolsa(engine, iteracion):
             cotizacionMc.fechaTexto = valor["fecha"]
             cotizacionMc.source = INFOBOLSA
 
+            try:
+                cotizacionMc.derivedsourcetimestamp = gettimestampfromfechatexto(INFOBOLSA, cotizacionMc)
+            except:
+                pass
+
             # tratamos de guardar un valor timestamp directamente
             try:
                 cotizacionMc.derivedsourcetimestamp = gettimestampfromfechatexto(INFOBOLSA, cotizacionMc)
