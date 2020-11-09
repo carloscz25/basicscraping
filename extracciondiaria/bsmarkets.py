@@ -95,8 +95,10 @@ def doimportbsmarkets(engine, iteracion):
             session.add(c)
         session.commit()
         browser.quit()
-    except Exception as e:
+        browser = None
+    except BaseException as e:
         browser.quit()
+        browser = None
         raise e
 
 

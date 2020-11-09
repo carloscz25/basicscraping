@@ -125,8 +125,10 @@ def doimportinfobolsa(engine, iteracion):
 
 
         browser.quit()
-    except Exception as e:
+        browser = None
+    except BaseException as e:
         browser.quit()
+        browser = None
         raise e
 
 

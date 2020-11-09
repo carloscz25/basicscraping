@@ -217,3 +217,8 @@ def logexception2mail(stacktrace, e):
         send_email("carloscz25@gmail.com", str(e), stacktrace)
     except:
         pass
+
+def dt642date(dt64):
+    import numpy as np
+    ts = (dt64 - np.datetime64('1970-01-01T00:00:00Z')) / np.timedelta64(1, 's')
+    return datetime.datetime.fromtimestamp(ts).date()

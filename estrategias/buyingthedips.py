@@ -4,12 +4,11 @@ from model import getaitraderengine
 import datetime
 import numpy as np
 import pandas
+from globalutils import dt642dt
 
 engine = getaitraderengine()
 
-def dt642date(dt64):
-    ts = (dt64 - np.datetime64('1970-01-01T00:00:00Z')) / np.timedelta64(1, 's')
-    return datetime.datetime.fromtimestamp(ts).date()
+
 
 tickers = gettickerlist(engine)
 percs = []

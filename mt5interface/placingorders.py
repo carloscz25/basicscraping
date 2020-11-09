@@ -46,7 +46,14 @@ def getrates(symbolstr, timeframe, datefrom, dateto):
     dfrom = datetime.datetime.strptime(datefrom, "%d-%m-%Y %H:%M")
     dto = datetime.datetime.strptime(dateto, "%d-%m-%Y %H:%M")
     rates = mt5.copy_rates_range(symbolstr, timeframe, dfrom, dto)
-    return rates
+    ratesadj = [[datetime.datetime.fromtimestamp(r[0]), r[1], r[2], r[3], r[4], r[5], r[6], r[7]] for r in rates]
+    return ratesadj
+
+def getratesaspandasdataframe(symbolstr, timeframe, datefrom, dateto):
+    import pandas
+    rates = getrates(symbolstr, timeframe, datefrom, dateto)
+    df = pandas.DataFrame(rates, columns=["tts", "open", "high", "low", "close", "tick_volume", "spread", "real_volume"])
+    return df
 
 def gettickerlist():
     return  ["A3M","ACS","ACX","AENA","ALB",
