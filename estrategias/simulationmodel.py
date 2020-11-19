@@ -34,13 +34,13 @@ class Portfolio:
         self.maxassetsnecessary = self.liquidassets
 
 
-    def totalvalue(self):
+    def totalvalueinbooks(self):
         total = self.liquidassets
         for o in self.operations:
             total += self.operations[o].numassets * self.operations[o].buyingprice
         return total
 
-    def totalvaluelastsimulationperiod(self):
+    def totalvalueatsimulationend(self):
         total = self.liquidassets
         for o in self.operations:
             id = o

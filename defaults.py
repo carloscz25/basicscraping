@@ -4,7 +4,10 @@ server = "localhost"
 port = 3306
 databasename = "aitrader"
 user = "root"
-pwd = "Pknrp2h8#"
+if RUNNING_ON == "UBUNTU":
+    pwd = "Pknrp2h8#"
+else:
+    pwd = "dtisat"
 # pwd = "dtisat"
 path = "/home/carlosconti/aitrader/basicscraping"
 # path = "/home/ubuntucontisola/aitrader/basicscraping/basicscraping "
