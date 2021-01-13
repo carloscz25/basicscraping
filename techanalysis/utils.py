@@ -102,6 +102,8 @@ def plot_emas_and_stochoscilators_for_ticker(ticker, emas, stochastics, engine):
     plt.show()
 
 
+
+
 engine = create_engine("mysql+mysqlconnector://root:dtisat@localhost:3306/aitrader")
 ticker = "ANA"
 

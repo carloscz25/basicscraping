@@ -134,17 +134,17 @@ gettickersdictionary(BSMARKETS, enginebsmarkets)
 
 
 th1 = threading.Thread(None, infobolsa, args=([engineinfobolsa]))
-th2 = threading.Thread(None, bolsademadrid, args=([enginebolsademadrid]))
-th3 = threading.Thread(None, bsmarkets, args=([enginebsmarkets]))
-th4 = threading.Thread(None, dataconsolidation, args=([enginedataconsolidation]))
+# th2 = threading.Thread(None, bolsademadrid, args=([enginebolsademadrid]))
+# th3 = threading.Thread(None, bsmarkets, args=([enginebsmarkets]))
+# th4 = threading.Thread(None, dataconsolidation, args=([enginedataconsolidation]))
 
 
 print("pasa modulo:" + __name__)
 if (__name__ == "__main__"):
     print("Lanzando threads de extraccion y consolidación...")
     th1.start()
-    th2.start()
-    th3.start()
+    # th2.start()
+    # th3.start()
     # th4.start()
 else:
     print("Ejecutada via falsa en Main...")
