@@ -9,8 +9,8 @@ if RUNNING_ON == "UBUNTU":
 else:
     pwd = "dtisat"
 # pwd = "dtisat"
-path = "/home/carlosconti/aitrader/basicscraping"
+path = "/home/carlosconti/Projects/basicscraping"
 # path = "/home/ubuntucontisola/aitrader/basicscraping/basicscraping "
 # path = "C:\\Users\\Carlos Conti\\PycharmProjects\\basicscraping"
 pathchromedriver = "/home/carlosconti/aitrader/chromedriver"
-pathfirefoxdriver = "/home/carlosconti/aitrader/geckodriver"
+pathfirefoxdriver = "/home/carlosconti/Projects/geckodriver"
