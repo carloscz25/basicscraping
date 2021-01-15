@@ -32,10 +32,10 @@ def doimportinfobolsa(engine, iteracion):
         if defaults.RUNNING_ON == "WINDOWS":
             browser = webdriver.Firefox(firefox_options=firefox_options)
         if defaults.RUNNING_ON == "UBUNTU":
-            print("aqui llego selenium ok")
-            browser = webdriver.Firefox(executable_path=defaults.pathfirefoxdriver, firefox_options=firefox_options)
-            print("aqui llego selenium ok running on ubuntu")
-            print(browser)
+            try:
+                browser = webdriver.Firefox(executable_path=defaults.pathfirefoxdriver, firefox_options=firefox_options)
+            except BaseException as be:
+                print(be)
         succeeded = False
         while(not succeeded):
             try:
