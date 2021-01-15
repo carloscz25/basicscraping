@@ -47,8 +47,8 @@ def evaluate(f, maxtimes=10):
 
 
 def isopentime(time):
-    # if (True):
-    #     return True
+    if (True):
+        return True
     hour = int(datetime.datetime.strftime(time, "%H"))
     minute = int(datetime.datetime.strftime(time, "%M"))
     weekday = int(datetime.datetime.strftime(time, "%w"))
