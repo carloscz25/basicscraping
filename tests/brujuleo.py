@@ -115,18 +115,21 @@ for t in tickers:
 
 
 fig, (ax1, ax2) = plt.subplots(2,1, sharex=False)
-#sort descending first 20 values of high-low-perc
+#sort descending first 15 values of high-low-perc
+firstn = 15
+
 sortedbyHLperc = sorted(d, key=lambda k: d[k]["high_low_perc"], reverse=True)
-sortedbyHLperc = sortedbyHLperc[0:14]
+sortedbyHLperc = sortedbyHLperc[0:(firstn-1)]
 sortedvaluesHLperc = [d[s]["high_low_perc"] for s in sortedbyHLperc]
-sortedvaluesHLperc = sortedvaluesHLperc[0:14]
+sortedvaluesHLperc = sortedvaluesHLperc[0:(firstn-1)]
 ax1.bar(sortedbyHLperc, sortedvaluesHLperc)
 ax1.set_title("High-Low Oscillation")
-#sort descending first 20 values of volatility
+#sort descending first 15 values of volatility
+
 sortedbyVOLAT = sorted(d, key=lambda k: d[k]["volatility"], reverse=True)
-sortedbyVOLAT = sortedbyVOLAT[0:14]
+sortedbyVOLAT = sortedbyVOLAT[0:(firstn-1)]
 sortedvaluesVOLAT = [d[s]["volatility"] for s in sortedbyVOLAT]
-sortedvaluesVOLAT = sortedvaluesVOLAT[0:14]
+sortedvaluesVOLAT = sortedvaluesVOLAT[0:(firstn-1)]
 
 ax2.bar(sortedbyVOLAT, sortedvaluesVOLAT)
 ax2.set_title("Volatility")
@@ -134,7 +137,7 @@ fig.set_size_inches(15,10)
 
 #guardo la imagen del grafico en una imagen en memoria y la adjunto al pdf y creo nueva pagina (showpage)
 buf = io.BytesIO()
-plt.savefig(buf, dpi=200, format='jpeg')
+plt.savefig(buf, dpi=150, format='jpeg')
 image = ImageReader(buf)
 c.drawImage(image, 0,0,1121, 793)
 c.showPage()
@@ -147,10 +150,14 @@ selectedtickers = sorted(selectedtickers)
 
 for t in selectedtickers:
     print(t)
-    dfD = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_D1, "01-01-2020 08:00", "12-01-2021 17:30")
-    dfH4 = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_H4, "01-09-2020 08:00", "12-01-2021 17:30")
-    dfH1 = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_H1, "01-11-2020 08:00", "12-01-2021 17:30")
-    df30M = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_M30, "15-12-2020 08:00", "12-01-2021 17:30")
+    datefromstr = (dateto + timedelta(days=-365)).strftime("%d-%m-%Y %H:%M")
+    dfD = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_D1, datefromstr, datetostr)
+    datefromstr = (dateto + timedelta(days=-90)).strftime("%d-%m-%Y %H:%M")
+    dfH4 = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_H4, datefromstr, datetostr)
+    datefromstr = (dateto + timedelta(days=-45)).strftime("%d-%m-%Y %H:%M")
+    dfH1 = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_H1, datefromstr, datetostr)
+    datefromstr = (dateto + timedelta(days=-20)).strftime("%d-%m-%Y %H:%M")
+    df30M = getratesaspandasdataframe(t, MetaTrader5.TIMEFRAME_M30, datefromstr, datetostr)
     fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, sharex=False)
     fig.set_size_inches(25,12)
     #ax1.plot(dfD["tts"], dfD["close"], linewidth=0.5)
@@ -165,7 +172,7 @@ for t in selectedtickers:
     # plt.savefig(path + "\\images\\"+t+".jpg", dpi=400)
     #repetimos proceso de guardar la imagen y saltar de pagina
     buf = io.BytesIO()
-    plt.savefig(buf, dpi=200, format='jpeg')
+    plt.savefig(buf, dpi=150, format='jpeg')
     image = ImageReader(buf)
     c.drawImage(image, 0, 0, 1121, 793)
     c.showPage()

@@ -1,10 +1,13 @@
 import os
 from pathlib import Path
-
+import platform
 import sys
 #comment if running on windows
-sys.path.append("/home/carlosconti/aitrader/basicscraping")
+if platform.system() == 'Linux':
+    sys.path.append("/home/carlosconti/Projects/basicscraping")
+
 import defaults
+
 sys.path.pop(0)
 print(sys.path)
 
