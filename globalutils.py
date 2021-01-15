@@ -47,6 +47,7 @@ def evaluate(f, maxtimes=10):
 
 
 def isopentime(time):
+    print("aqui llego...")
     # if (True):
     #     return True
     hour = int(datetime.datetime.strftime(time, "%H"))

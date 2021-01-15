@@ -36,7 +36,6 @@ def infobolsa(engine):
     from extracciondiaria.infobolsa import doimportinfobolsa
     contador = 1
     while(True):
-        print("aqui llego...")
         if (isopentime(datetime.datetime.now())):
             try:
                 doimportinfobolsa(engine, contador)
