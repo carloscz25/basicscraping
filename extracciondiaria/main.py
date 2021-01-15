@@ -37,6 +37,7 @@ def infobolsa(engine):
     contador = 1
     while(True):
         if (isopentime(datetime.datetime.now())):
+            print("aqui llego isopen=true...")
             try:
                 doimportinfobolsa(engine, contador)
                 mthprint("INFOBOLSA: Iteracion " + str(contador) + " exitosa " + str(datetime.datetime.now()))
@@ -50,6 +51,7 @@ def infobolsa(engine):
 
 
         else:
+            print("aqui llego isopen=false...")
             mthprint("INFOBOLSA: Fuera de horario")
         time.sleep(120)
 
