@@ -5,6 +5,21 @@ from sqlalchemy import create_engine
 import threading
 mthprintlock = threading.Lock()
 
+def is_labour_day(dateasstring):
+    """
+    Method returns true/false if given day is/is not a labour day
+    :param d: Date in string format %d-%m%-Y being tested
+    :return: True if is labor day, False otherwhise
+    """
+    fmt = "%d-%m-%Y"
+    not_labour_days = ["01-01-2021","02-04-2021","05-04-2021","24-12-2021","31-12-2021"]
+    d = datetime.datetime.strptime(dateasstring,fmt).date()
+    for s in not_labour_days:
+        _d = datetime.datetime.strptime(s, fmt)
+        if d == _d:
+            return False
+    return True
+
 def mthprint(v):
     mthprintlock.acquire()
     print(v,flush=True)
@@ -47,8 +62,15 @@ def evaluate(f, maxtimes=10):
 
 
 def isopentime(time):
-    if (True):
-        return True
+    # if (True):
+    #     return True
+
+    #checking if is labour day
+    fmt = "%d-%m-%Y"
+    dateasstring = datetime.datetime.strftime(time, fmt)
+    if is_labour_day(dateasstring)==False:
+        return False
+
     hour = int(datetime.datetime.strftime(time, "%H"))
     minute = int(datetime.datetime.strftime(time, "%M"))
     weekday = int(datetime.datetime.strftime(time, "%w"))

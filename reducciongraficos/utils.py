@@ -1,4 +1,7 @@
 import matplotlib.pyplot as plt
+from mpl_candlestics.mpl_candlesticks import plot_candlesticks
+
+
 
 
 class onda():
@@ -15,7 +18,8 @@ class onda():
             s += "Impulsora"
         elif self.impulsoraRegresora == False:
             s += "Regresora"
-        s += "(" + self.valorInicio + "-" + self.valorPI + "-" + self.valorFin + ")"
+        s += "(" + str(self.valorInicio) + "-" + str(self.valorPI) + "-" + str(self.valorFin) + ")"
+        return s
 
 def concatena_segmentos_contiguos_de_igual_pendiente(timestamps, valores):
     """
@@ -85,6 +89,77 @@ def transforma_segmentos_en_ondas_impulsoras_regresoras(timestamps, valores):
             curronda = None
     return ondas
 
+def concatena_ondas_impulsoras_regresoras_de_igual_signo(ondas):
+    """
+    El metodo concatena aquellas ondas del mismo signo (impulsoras/regresoras) siempre y cuando sean
+    contiguas, y devuelve la serie de ondas simplificada. Es decir solo concatena impulsora con impulsora
+    y regresora con regresora. La concatenacion de 2 ondas del mismo signo es como resultado una onda que tiene
+    su inicio en el punto inicial de la primera onda, el punto de inflexion en el mayor del punto de inflexion de ambas
+    y el punto final en el punto final de la segunda onda.
+    Con esta logica el resultado debería ser un array de ondas impulsoras/regresoras alternado
+    :param ondas: array de ondas
+    :return: array de ondas
+    """
+    resultantes = []
+    currsigno = None #impulsora/regresora
+    for o in ondas:
+        if currsigno == None:
+            resultantes.append(o)
+            currsigno = o.impulsoraRegresora
+        elif o.impulsoraRegresora == currsigno:
+            #fusiono la onda actual con la ultima anexada
+            #en la lista de resultantes
+            oconcat = onda()
+            oconcat.impulsoraRegresora = currsigno
+            uonda = resultantes[len(resultantes)-1]
+            oconcat.valorInicio, oconcat.timestampInicio = uonda.valorInicio, uonda.timestampInicio
+            oconcat.valorFin, oconcat.timestampFin = o.valorFin, o.timestampFin
+            if o.valorPI >= uonda.valorPI:
+                oconcat.valorPI, oconcat.timestampPI = o.valorPI, o.timestampPI
+            else:
+                oconcat.valorPI, oconcat.timestampPI = uonda.valorPI, uonda.timestampPI
+            resultantes[len(resultantes)-1] = oconcat
+        elif o.impulsoraRegresora != currsigno:
+            currsigno = o.impulsoraRegresora
+            resultantes.append(o)
+    return resultantes
+
+def concatena_ondas_impulsoras_regresoras_de_signo_contrario(ondas):
+    """
+    Concatena ondas: concatena solo impulsora con regresora y regresora con impulsora. Debido a que el array
+    resultante no guarda alternancia se deberá verificar y registrar si la onda resultante es impulsora o regresora
+    :param ondas: array de ondas alternadas (I-R-I-R....)
+    :return: array de ondas concatenadas que no tiene porque respetar alternancia
+    """
+    resultantes = []
+
+    for i, o in enumerate(ondas):
+        if o.impulsoraRegresora==False:
+            if i > 0:
+                # fusiono la onda actual con la onda anterior
+                # y anexo en la lista de resultantes
+                oconcat = onda()
+                uonda = ondas[i-1]
+                oconcat.valorInicio, oconcat.timestampInicio = uonda.valorInicio, uonda.timestampInicio
+                oconcat.valorFin, oconcat.timestampFin = o.valorFin, o.timestampFin
+                if o.valorPI >= uonda.valorPI:
+                    oconcat.valorPI, oconcat.timestampPI = o.valorPI, o.timestampPI
+                else:
+                    oconcat.valorPI, oconcat.timestampPI = uonda.valorPI, uonda.timestampPI
+
+                if oconcat.valorInicio>=oconcat.valorFin:
+                    oconcat.impulsoraRegresora = True
+                else:
+                    oconcat.impulsoraRegresora = False
+
+                resultantes.append(oconcat)
+    return resultantes
+
+def aplica_reduccion_de_ondas(ondas):
+    o = concatena_ondas_impulsoras_regresoras_de_igual_signo(ondas)
+    o = concatena_ondas_impulsoras_regresoras_de_signo_contrario(o)
+    return o
+
 def plot_ondas(ondas, ax):
     ttss = []
     valores = []
@@ -95,7 +170,7 @@ def plot_ondas(ondas, ax):
         valores.append(onda.valorPI)
     ttss.append(onda.timestampFin)
     valores.append(onda.valorFin)
-    ax.plot(ttss, valores, linewidth=0.3)
+    ax.plot(ttss, valores, linewidth=0.3, color='red')
 
 
 import MetaTrader5 as mt5
@@ -103,16 +178,25 @@ import mt5interface.placingorders as mt5i
 
 #probamos funcion con valores reales
 mt5.initialize(login=30383295, password="Pknrp2h8@", server="AdmiralMarkets-Live")
-df = mt5i.getratesaspandasdataframe("FDR", mt5.TIMEFRAME_H1, "01-12-2020 08:00", "14-12-2020 18:00")
+df = mt5i.getratesaspandasdataframe("ALMSA", mt5.TIMEFRAME_M30, "12-08-2020 08:00", "18-01-2021 18:00")
 timestamps = df["tts"].values
 valores = df["close"].values
 ts_c, v_c = concatena_segmentos_contiguos_de_igual_pendiente(timestamps, valores)
 ondas = transforma_segmentos_en_ondas_impulsoras_regresoras(ts_c, v_c)
 
-fig, (ax1, ax2, ax3) = plt.subplots(3,1, sharex=True)
-ax1.plot(timestamps, valores, linewidth=0.3)
-ax2.plot(ts_c, v_c, linewidth=0.3)
-plot_ondas(ondas, ax3)
+fig, (ax1, ax2) = plt.subplots(2,1, sharex=True)
+# ax1.plot(timestamps, valores, linewidth=0.3)
+
+plot_ondas(ondas, ax1)
+
+o = aplica_reduccion_de_ondas(ondas)
+o = aplica_reduccion_de_ondas(o)
+
+
+plot_ondas(o, ax2)
+
+
+
 
 plt.show()
 

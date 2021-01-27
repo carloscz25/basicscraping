@@ -3,7 +3,7 @@ import MetaTrader5
 from mt5interface.placingorders import getratesaspandasdataframe, gettickerlist
 import matplotlib.pyplot as plt
 import matplotlib.dates as mpl_dates
-from mplfinance.original_flavor import candlestick_ohlc
+from mpl_candlestics.mpl_candlesticks import plot_candlesticks
 import math
 import os
 from datetime import datetime
@@ -19,59 +19,9 @@ import os
 import io
 from datetime import timedelta
 
-class BrujuleoDateFormatter(ticker.Formatter):
-    """
-    Format a tick (in days since the epoch) with a
-    `~datetime.datetime.strftime` format string.
-    """
-    df = None
-    timestampMin, timestampMax = None, None
-
-    def illegal_s(self):
-        # return re.compile(r"((^|[^%])(%%)*%s)")
-        pass
-    def __init__(self, fmt, tz=None, df=None):
-        """
-        Parameters
-        ----------
-        fmt : str
-            `~datetime.datetime.strftime` format string
-        tz : `datetime.tzinfo`, default: :rc:`timezone`
-            Ticks timezone.
-        """
-        if tz is None:
-            tz = mpl_dates._get_rc_timezone()
-        self.fmt = fmt
-        self.tz = tz
-        self.df = df
-
-
-    def __call__(self, x, pos=0):
-        maxindex = max(self.df.index.values)
-        minindex = min(self.df.index.values)
-        mindateint = int(time.mktime(self.df["tts"][minindex].timetuple()))
-        maxdateint = int(time.mktime(self.df["tts"][maxindex].timetuple()))
-        factor = (maxdateint - mindateint)/len(self.df.index.values)
-        dateint = mindateint + (factor*x)
-        datet = datetime.fromtimestamp(dateint)
-        dateformatted =  datet.strftime(self.fmt)
-        return dateformatted
 
 
 
-    def set_tzinfo(self, tz):
-        self.tz = tz
-
-def plot_candlesticks(dfTicker, ax):
-    ohlc = []
-    for index, row in dfTicker.iterrows():
-        d = mpl_dates._to_ordinalf(dfTicker["tts"][index])
-        append_me = dfTicker.index[index], dfTicker["open"][index], dfTicker["high"][index], dfTicker["low"][index], dfTicker["close"][index], \
-                    dfTicker["real_volume"][index],
-        ohlc.append(append_me)
-    candlestick_ohlc(ax, ohlc)
-    # ax.xaxis.set_major_formatter(mpl_dates.DateFormatter('%d/%m'))
-    ax.xaxis.set_major_formatter(BrujuleoDateFormatter('%d/%m', df=dfTicker))
 
 path = os.path.dirname(os.path.abspath(__file__))
 datenow = datetime.now()

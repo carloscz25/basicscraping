@@ -1,0 +1,40 @@
+#1. Grafico ACS 1.jpg muestra histograma : abscisas: valor del RSI_14, ordenadas: numero de sesiones que devolvieron un 4% o mas.
+Notar que todo lo graficado son sesiones que fueron seguidas por 5 sesiones en donde se produjo una o mas con retornos
+superiores al 4%. Ahí vemos se produce la mayoria en el rango 30-70.
+
+helper reproducir:(graficacion)
+sdf = df.loc[(df["rsi_14"]>=30) & (df["rsi_14"]<=70)]
+ax1.hist(sdf["diff_n_sessions_above_4_perc"].values, orientation='horizontal')
+sdf = df.loc[(df["rsi_14"] < 30) | (df["rsi_14"] > 70)]
+ax2.hist(sdf["diff_n_sessions_above_4_perc"].values, orientation='horizontal')
+
+#2. Grafico ACS 2.jpg muestra histogramas sobre aprox. 1035: abscisas : numero de sesiones con diferencial >= 0.04 de entre las 5
+siguientes a la sesion de la toma de muestra. El grafico superior muestra dicho valor cuando el RSI_14 esta entre valores 30 y 70,
+mientras que el inferior cuando esta fuera de ese rango. Se ve un predominio aplastante de ceros, por lo que se infiere que, el
+valor del RSI_14 entre 30/70 no muestra causalidad con la obtención de beneficios de un 4% durante las 5 siguientes sesiones. De la
+misma manera los ceros predominan en la parte inferior, por lo que el valor de RSI_14 por si solo no muestra relación con que alguna
+de las 5 sesiones siguientes devuelva beneficios del 4% o mas.
+
+Si se ve entre ambos graficos que 1/4 parte aprox. de sesiones arrojan un rsi_14 fuera del rango 30/70, y el resto dentro del mismo
+
+#3. Grafico ACS 3: hist -> ordenadas: valor del macd_dif (diferencia entre macd_line y macd_signal_line), abscisas: numero de
+sesiones. Superior: sesiones > 4% distribucion sobre valores del macd_diff, e inferior: idem pero con sesiones = 0%
+Vemos que el macd_diff por si solo no tiene relación alguna en si hay retornos o no, pues se debería apreciar diferencia en la
+distribucion del histograma.
+
+Me voy a concentrar en el rsi_14 y el macd pues de momento son los dos indicadores que uso. El resto de rsi's no me dan mucha
+información. En todo caso el rsi_21 puede ser aporte algo mas de información pero un rsi de menor periodo que 14 parece no ayudar
+mucho. Asi que hoy elimino los rsi 5,10,18,21 y me concentro en el de 14. A su vez le añadire una columna rsi_14_shift, en el cual
+insero el rsi_14 de 4 sesiones antes para asi evaluar la distribucion de resultados cuando rsi_14-rsi_14_shift es positivo y
+negativo. Realizaré la misma comparación con el macd_diff.
+
+Una vez realizada dicha comparación, y sin filtar por numero de sesiones con beneficio, aprecio que se empieza a acercar el
+porcentaje de sesiones produciendo beneficio en las siguientes 5 sesiones con las que no producen o producen perdida, como se aprecia
+en ENC 1.jpg (escogido a conciencia) donde mas del 50% de sesiones cumpliendo los requisitos de tendencia del rsi_14 y el macd_diff_trend
+arrojan beneficio en las siguientes 5 sesiones. A su vez adjunto ACS 4.jpg siguiendo la misma logica: dicho porcentaje es en ACS
+de algo mas del 40%. Nos empezamos a acercar.
+helper filtro:
+sdf = df.loc[(df["rsi_14_trend"]<0)&(df["macd_diff_trend"]>0)]
+ax1.hist(sdf["diff_n_sessions_above_4_perc"].values, orientation='horizontal', density=True)
+
+
